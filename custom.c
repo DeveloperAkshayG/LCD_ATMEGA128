@@ -1,3 +1,4 @@
+//DISPLAYED NETEL LOGO ALONG WITH NAME OF NETEL INDIA LTD
 #define F_CPU 8000000UL		/* Define CPU Frequency e.g. here its 8MHz */
 #include <avr/io.h>		/* Include AVR std. library file */
 #include <util/delay.h>		/* Include inbuilt defined Delay header file */
@@ -95,31 +96,64 @@ int main()
 {
 	char i;
 	
+	DDRE=0XFF;
+	PORTE=0b01000000;
 	
-	unsigned char Character1[8] = { 0X04, 0X0E, 0X0E, 0X0E, 0X1F, 0X00, 0X04, 0X00 }; //BELL
-	unsigned char Character2[8] = { 0x04, 0x04, 0x15, 0x15, 0x0E, 0x04, 0x00, 0x00 }; //ARROW
-	unsigned char Character3[8] = { 0x1f, 0x0a, 0x0a, 0x1e, 0x1a, 0x02, 0x00, 0x00 }; //marathi letter
-
+	
+	/*unsigned char Character1[8] = { 0x00, 0x00, 0x0a, 0x00, 0x11, 0x0e, 0x00, 0x00}; //smiley
+	unsigned char Character2[8] = { 0x1f, 0x0a, 0x0a, 0x1e, 0x1a, 0x02, 0x00, 0x00 }; //marathi letter
+	unsigned char Character3[8] = { 0x1f, 0x00, 0x09, 0x0d, 0x0b, 0x09, 0x00, 0x1f }; 
+	unsigned char Character4[8] = { 0x1f, 0x11, 0x1b, 0x1f, 0x1b, 0x11, 0x11, 0x1f };*/
+ 
+	//netel logo
+    unsigned char Character1[8] = { 0x10, 0x8, 0x4, 0x12, 0x9, 0x4, 0x12, 0x1};
+    unsigned char Character2[8] = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x8};
+   // unsigned char Character3[8] = { 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f};
+   // unsigned char Character3[8] = { 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0x1f, 0xf}; //correct one
+  
+	unsigned char Character3[8] = { 0x1f, 0x1f, 0x1f, 0x1f, 0xf, 0x7, 0x3, 0x1};
+   
+   // unsigned char Character4[8] = { 0x10, 0x18, 0x1c, 0x1e, 0x1f, 0x1f, 0x1f, 0x1f}; //correct one
+    unsigned char Character4[8] = { 0x12, 0x19, 0x1c, 0x1e, 0x1f, 0x1f, 0x1f, 0x1f};
+   // unsigned char Character5[8] = { 0x12, 0x9, 0x4, 0x2, 0x1, 0x0, 0x0, 0x00};
+    unsigned char Character5[8] = { 0x12, 0x9, 0x4, 0x12, 0x9, 0x4, 0x2, 0x1};
+   // unsigned char Character6[8] = { 0x1f, 0x1f, 0x3, 0x9, 0x4, 0x2, 0x11, 0x8};
+//    unsigned char Character6[8] = { 0x7, 0x3, 0x1, 0x8, 0x4, 0x2, 0x11, 0x8};   //correct one
+    
+	unsigned char Character6[8] = { 0x0, 0x0, 0x10, 0x8, 0x4, 0x2, 0x11, 0x8};
+	
+	
+ 
 	LCD_Init();
 	
 	
 	LCD_Custom_Char(0, Character1);  // Build Character1 at position 0 
-	LCD_Custom_Char(1, Character2);  // Build Character2 at position 0 
-	LCD_Custom_Char(2, Character3);  // Build Character3 at position 0 
+	LCD_Custom_Char(1, Character2);  // Build Character2 at position 1
+	LCD_Custom_Char(2, Character3);  // Build Character2 at position 2 
+	LCD_Custom_Char(3, Character4);  // Build Character2 at position 2 
+	LCD_Custom_Char(4, Character5);  // Build Character2 at position 2 
+	LCD_Custom_Char(5, Character6);  // Build Character2 at position 2 
+	
+//	LCD_Custom_Char(3, Character4);  // Build Character2 at position 0 
+	
 	
 	LCD_Command(0x80);		/*cursor at home position */
 //	LCD_String_xy(0,5,"NETEL");
 //	LCD_Command(0xc0);
 	
 	//LCD_Char(5);
-	for(i=0;i<3;i++)		// function will send data 1 to 8 to lcd 
+	for(i=0;i<6;i++)		// function will send data 1 to 8 to lcd 
 	{
-		if (i==2);
+		LCD_Char(i);		// char at 'i'th position will display on lcd
+		if(i==2)
 		{
-			goto_lcd_location(0,6);
-			LCD_Char(i);		// char at 'i'th position will display on lcd 
-		//	LCD_Char(' ');		// space between each custom char. 
+			LCD_Command(0xC0);
 		}
+	//	LCD_Char(' ');		// space between each custom char. 
+		
 	}
+	
+	LCD_String_xy (0,5,"NETEL");
+	LCD_String_xy (1,5,"INDIA LTD");
 //	while(1);
 }
